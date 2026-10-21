@@ -1,0 +1,18 @@
+{
+  "name": "analytics-sdk-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end browser and server analytics demo for a restaurant application",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "sql.js": "^1.13.0"
+  }
+}

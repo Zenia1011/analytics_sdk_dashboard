@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Fork & Fern | Restaurant Demo</title>
+
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/sdk/analytics.js"></script>
+</head>
+
+<body>
+
+  <header class="top">
+    <a class="brand" href="/">Fork <span>&</span> Fern</a>
+
+    <nav>
+      <a href="#menu">Menu</a>
+      <a href="/dashboard.html">Analytics dashboard ↗</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="hero">
+
+      <div>
+        <p class="eyebrow">GOOD FOOD, GOOD COMPANY</p>
+
+        <h1>
+          A little comfort.<br>
+          <em>A lot of flavour.</em>
+        </h1>
+
+        <p class="muted">
+          Seasonal plates, fresh ingredients, and the kind of meal
+          that makes you stay a little longer.
+        </p>
+
+        <a class="button" href="#menu">Explore the menu</a>
+      </div>
+
+      <div class="hero-art" aria-label="Decorative food illustration">
+        <div class="plate">
+          <div class="food food1"></div>
+          <div class="food food2"></div>
+          <div class="food food3"></div>
+          <div class="food food4"></div>
+          <span>F&F</span>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="menu" class="menu-section">
+
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">MADE WITH CARE</p>
+          <h2>Today’s favourites</h2>
+        </div>
+
+        <p class="muted">Small menu. Big appetite.</p>
+      </div>
+
+      <div class="menu-grid">
+
+        <article class="dish">
+          <div class="dish-art pasta">🍝</div>
+
+          <div class="dish-row">
+            <div>
+              <h3>Garden Pesto Pasta</h3>
+              <p>Herb pesto, parmesan, toasted seeds</p>
+            </div>
+
+            <strong>₹349</strong>
+          </div>
+
+          <button
+            class="button order"
+            data-item="Garden Pesto Pasta"
+            data-price="349"
+          >
+            Order now
+          </button>
+        </article>
+
+        <article class="dish">
+          <div class="dish-art burger">🍔</div>
+
+          <div class="dish-row">
+            <div>
+              <h3>House Smash Burger</h3>
+              <p>Griddled patty, pickles, house sauce</p>
+            </div>
+
+            <strong>₹399</strong>
+          </div>
+
+          <button
+            class="button order"
+            data-item="House Smash Burger"
+            data-price="399"
+          >
+            Order now
+          </button>
+        </article>
+
+        <article class="dish">
+          <div class="dish-art cake">🍰</div>
+
+          <div class="dish-row">
+            <div>
+              <h3>Cloud Nine Cheesecake</h3>
+              <p>Vanilla cream, berry compote</p>
+            </div>
+
+            <strong>₹249</strong>
+          </div>
+
+          <button
+            class="button order"
+            data-item="Cloud Nine Cheesecake"
+            data-price="249"
+          >
+            Order now
+          </button>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="notice">
+      <div>
+        <h2>Fresh food, no fuss.</h2>
+        <p>Demo orders are recorded as server-side business events.</p>
+      </div>
+
+      <span>✳</span>
+    </section>
+
+  </main>
+
+  <footer>
+    Fork & Fern · Demo restaurant application
+    <span>Made for an analytics SDK demo</span>
+  </footer>
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+  <script>
+    const analytics = new AnalyticsSDK({
+      endpoint: location.origin
+    });
+
+    analytics.pageView({
+      page: 'restaurant-home'
+    });
+
+    document.querySelectorAll('.order').forEach(button =>
+      button.addEventListener('click', async () => {
+
+        analytics.track('order_button_clicked', {
+          item: button.dataset.item
+        });
+
+        button.disabled = true;
+        button.textContent = 'Placing order…';
+
+        try {
+          const response = await fetch('/api/demo-order', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              item: button.dataset.item,
+              price: Number(button.dataset.price)
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error('Order failed');
+          }
+
+          document.getElementById('toast').textContent =
+            'Order placed: ' +
+            button.dataset.item +
+            ' — ₹' +
+            button.dataset.price;
+
+          analytics.track('order_confirmation_viewed', {
+            item: button.dataset.item
+          });
+
+        } catch {
+          document.getElementById('toast').textContent =
+            'Could not place order. Please try again.';
+
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Order now';
+        }
+
+      })
+    );
+  </script>
+
+</body>
+</html>

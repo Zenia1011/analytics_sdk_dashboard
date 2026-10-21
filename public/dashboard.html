@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Analytics Dashboard | Fork & Fern</title>
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="dashboard-body">
+
+  <header class="top">
+    <a class="brand" href="/">Fork <span>&</span> Fern</a>
+
+    <nav>
+      <a href="/">← Restaurant demo</a>
+    </nav>
+  </header>
+
+  <main class="dash">
+
+    <div class="dash-title">
+
+      <div>
+        <p class="eyebrow">MEASURE WHAT MATTERS</p>
+        <h1>Analytics overview</h1>
+        <p class="muted">
+          Browser activity and server-side business events in one place.
+        </p>
+      </div>
+
+      <div class="filters">
+        <label>
+          From
+          <input id="from" type="date">
+        </label>
+
+        <label>
+          To
+          <input id="to" type="date">
+        </label>
+
+        <button id="apply" class="button">Apply dates</button>
+      </div>
+
+    </div>
+
+    <div id="status" class="status" role="status">
+      Loading analytics…
+    </div>
+
+    <section class="metrics">
+
+      <article class="metric">
+        <span>Total events</span>
+        <strong id="total">—</strong>
+        <small>All captured events</small>
+      </article>
+
+      <article class="metric">
+        <span>Page views</span>
+        <strong id="views">—</strong>
+        <small>Browser page visits</small>
+      </article>
+
+      <article class="metric">
+        <span>Unique visitors</span>
+        <strong id="visitors">—</strong>
+        <small>Distinct browser IDs</small>
+      </article>
+
+      <article class="metric">
+        <span>Server events</span>
+        <strong id="server">—</strong>
+        <small>Business-side events</small>
+      </article>
+
+    </section>
+
+    <section class="chart-grid">
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Event activity</h2>
+          <span>Events per day</span>
+        </div>
+
+        <div id="trend" class="chart"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Event sources</h2>
+          <span>Browser vs server</span>
+        </div>
+
+        <div id="sources" class="bars"></div>
+      </article>
+
+    </section>
+
+    <section class="table-grid">
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Popular pages</h2>
+          <span>By page views</span>
+        </div>
+
+        <div id="pages"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Top events</h2>
+          <span>By count</span>
+        </div>
+
+        <div id="events"></div>
+      </article>
+
+    </section>
+
+    <p class="footnote">
+      Demo data is stored locally in SQLite. Visitor IDs are browser-local
+      pseudonymous identifiers, not verified people.
+    </p>
+
+  </main>
+
+  <script src="/dashboard.js"></script>
+
+</body>
+</html>
